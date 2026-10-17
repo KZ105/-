@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>五子棋 · 30×30 · 五局三胜 · 跨局冻结</title>
+    <style>
+      :root {
+        --bg: #f4f1ea;
+        --panel: #ffffff;
+        --text: #2a2724;
+        --muted: #7c7570;
+        --accent: #c8964f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 24px 16px 40px;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      }
+      h1 { font-size: 22px; margin: 0; letter-spacing: 2px; }
+      .panel {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: var(--panel);
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      }
+      #board {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      #status { font-weight: 600; min-width: 250px; text-align: center; }
+      #status[data-state="over"] { color: #d33; }
+      #status[data-state="ai"] { color: var(--muted); }
+      #score { font-weight: 700; color: var(--accent); min-width: 96px; text-align: center; }
+      #round { color: var(--muted); font-size: 13px; min-width: 52px; text-align: center; }
+      #steps { color: var(--muted); font-size: 13px; min-width: 82px; text-align: right; }
+      #next { border-color: var(--accent); background: #fff8ec; font-weight: 600; }
+      #next[hidden] { display: none; }
+      button {
+        font: inherit;
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: 1px solid #d8d2c8;
+        background: #fff;
+        color: inherit;
+        cursor: pointer;
+      }
+      button:disabled { opacity: 0.45; cursor: not-allowed; }
+      button:hover:not(:disabled) { border-color: var(--accent); }
+      select {
+        font: inherit;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid #d8d2c8;
+        background: #fff;
+        color: inherit;
+        cursor: pointer;
+      }
+      label { font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+      .hint { font-size: 13px; color: var(--muted); margin: 0; }
+    </style>
+  </head>
+  <body>
+    <h1>五子棋 · 30×30</h1>
+
+    <div class="panel">
+      <span id="status">轮到黑棋</span>
+      <span id="score">黑 0 : 0 白</span>
+      <span id="round">第 1 局</span>
+      <span id="steps">本局第 0 手</span>
+      <button id="undo" disabled>悔棋</button>
+      <button id="next" hidden>开始第 2 局</button>
+      <button id="restart">重新开始</button>
+      <label>
+        难度
+        <select id="difficulty">
+          <option value="easy">简单</option>
+          <option value="normal" selected>普通</option>
+          <option value="hard">困难</option>
+        </select>
+      </label>
+      <label>
+        先手
+        <select id="first">
+          <option value="human" selected>我执黑</option>
+          <option value="ai">电脑执黑</option>
+        </select>
+      </label>
+    </div>
+
+    <canvas id="board"></canvas>
+    <p class="hint">点击交叉点落子 · 五连得 1 分 · 先得 3 分赢得整场 · 五连移除五颗，六连及以上整条移除</p>
+    <p class="hint">每局结束棋盘保留；上局剩余棋子周围 3×3（蓝色标记）为冻结区，新局开始后随机 5–15 手解除（该手落完后），解除前不可落子。</p>
+
+    <!-- app.js 由 app.ts 编译而来；直接双击本文件即可游玩，无需服务器 -->
+    <script src="./app.js"></script>
+  </body>
+</html>
